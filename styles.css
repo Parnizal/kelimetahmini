@@ -5,21 +5,10 @@ body {
     text-align: center;
 }
 
-button {
-    margin: 10px;
-    padding: 10px;
-    border-radius: 10px; /* Oval köşeler */
-    background-color: #4CAF50; /* Yeşil */
-    color: white;
-    border: none;
-    cursor: pointer;
+.container {
+    margin-top: 50px;
 }
 
-button:hover {
-    background-color: #45a049;
-}
-
-#word {
-    font-size: 24px;
-    margin: 20px;
+#word-list {
+    margin-top: 20px;
 }

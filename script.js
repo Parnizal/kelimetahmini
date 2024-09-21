@@ -1,4 +1,5 @@
-const words = 'ability': 'kabiliyet, yetenek, beceri',
+const words = {
+    'ability': 'kabiliyet, yetenek, beceri',
     'able': 'yapabilmek, yapabilen',
     'about': 'hakkında, ilgili, konusunda',
     'above': 'yukarıda',
@@ -528,52 +529,16 @@ const words = 'ability': 'kabiliyet, yetenek, beceri',
     'zoo': 'hayvanat bahçesi'
 };
 
-let currentWord;
-let score = 0;
-
-function getRandomWord() {
-    const wordKeys = Object.keys(words);
-    currentWord = wordKeys[Math.floor(Math.random() * wordKeys.length)];
-    document.getElementById('word').innerText = currentWord;
+// Kelimeleri listeye ekle
+const wordList = document.getElementById('word-list');
+for (const [english, turkish] of Object.entries(words)) {
+    const wordItem = document.createElement('div');
+    wordItem.textContent = `${english}: ${turkish}`;
+    wordList.appendChild(wordItem);
 }
 
-function setupOptions() {
-    const optionsContainer = document.getElementById('options');
-    optionsContainer.innerHTML = ''; // Temizle
-
-    const correctAnswer = words[currentWord];
-    const wrongAnswers = Object.values(words).filter(word => word !== correctAnswer);
-    const options = [correctAnswer, ...wrongAnswers.sort(() => 0.5 - Math.random()).slice(0, 3)];
-    options.sort(() => 0.5 - Math.random());
-
-    options.forEach(option => {
-        const button = document.createElement('button');
-        button.innerText = option;
-        button.onclick = () => checkAnswer(option);
-        optionsContainer.appendChild(button);
-    });
+function speakWord() {
+    const utterance = new SpeechSynthesisUtterance();
+    utterance.text = "Kelime telaffuzu";
+    speechSynthesis.speak(utterance);
 }
-
-function checkAnswer(selectedOption) {
-    const correctAnswer = words[currentWord];
-    if (selectedOption === correctAnswer) {
-        score += 10;
-        alert('Doğru!');
-    } else {
-        alert('Yanlış! Doğru cevap: ' + correctAnswer);
-    }
-    document.getElementById('score').innerText = 'Puan: ' + score;
-    getRandomWord();
-    setupOptions();
-}
-
-document.getElementById('pronounce').onclick = function() {
-    const utterance = new SpeechSynthesisUtterance(currentWord);
-    window.speechSynthesis.speak(utterance);
-};
-
-// Sayfa yüklendiğinde ilk kelimeyi al
-window.onload = () => {
-    getRandomWord();
-    setupOptions();
-};
