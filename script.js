@@ -529,16 +529,48 @@ const words = {
     'zoo': 'hayvanat bahçesi'
 };
 
-// Kelimeleri listeye ekle
-const wordList = document.getElementById('word-list');
-for (const [english, turkish] of Object.entries(words)) {
-    const wordItem = document.createElement('div');
-    wordItem.textContent = `${english}: ${turkish}`;
-    wordList.appendChild(wordItem);
+const wordKeys = Object.keys(words);
+let currentWordIndex = 0;
+
+function nextWord() {
+    currentWordIndex = (currentWordIndex + 1) % wordKeys.length; // Kelime listesini döngüye al
+    updateWordAndOptions();
 }
 
-function speakWord() {
-    const utterance = new SpeechSynthesisUtterance();
-    utterance.text = "Kelime telaffuzu";
-    speechSynthesis.speak(utterance);
+function updateWordAndOptions() {
+    const wordElement = document.querySelector('.word');
+    const options = document.querySelectorAll('.option-button');
+    
+    // Yeni kelimeyi güncelle
+    const currentWord = wordKeys[currentWordIndex];
+    wordElement.textContent = currentWord;
+
+    // Şıkları güncelle
+    const correctAnswerIndex = Math.floor(Math.random() * options.length);
+    
+    options.forEach((button, index) => {
+        if (index === correctAnswerIndex) {
+            button.textContent = words[currentWord]; // Doğru cevabı ekle
+            button.onclick = () => showNotification(true); // Doğru cevap için
+        } else {
+            let randomKey;
+            do {
+                randomKey = wordKeys[Math.floor(Math.random() * wordKeys.length)];
+            } while (randomKey === currentWord); // Aynı kelime olmasın
+            button.textContent = words[randomKey]; // Yanlış cevaplar ekle
+            button.onclick = () => showNotification(false); // Yanlış cevap için
+        }
+    });
 }
+
+// Bildirim gösterme fonksiyonu
+function showNotification(isCorrect) {
+    if (isCorrect) {
+        alert("Doğru cevap!");
+    } else {
+        alert("Yanlış cevap!");
+    }
+}
+
+// Sayfa yüklendiğinde ilk kelimeyi ayarla
+updateWordAndOptions();
