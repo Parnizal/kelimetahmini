@@ -7,13 +7,15 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div id="app">
         <h1>Kelime Öğrenme Uygulaması</h1>
-        <div id="wordDisplay">Kelime burada görünecek</div>
+        <div id="word-container">
+            <p id="word"></p>
+            <button id="pronounce">Telaffuz Et</button>
+        </div>
         <div id="options"></div>
-        <button id="nextWord">Sonraki Kelime</button>
+        <div id="score">Puan: 0</div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
